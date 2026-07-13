@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const mongoose = require("mongoose");
-const connectDB = require("./config/db");
+const connectDB = require("./db/connect");
 
 const Category = require("./models/Category");
 const Product = require("./models/Product");
@@ -9,9 +9,21 @@ const Cart = require("./models/Cart");
 const Order = require("./models/Order");
 
 const categories = [
-  { name: "Electronics" },
-  { name: "Books" },
-  { name: "Clothes" },
+  {
+    name: "Electronics",
+    description: "Gadgets, devices and smart appliances",
+    slug: "electronics",
+  },
+  {
+    name: "Books",
+    description: "Educational and fictional literature media books",
+    slug: "books",
+  },
+  {
+    name: "Apparel",
+    description: "Clothing line outfits garments items",
+    slug: "apparel",
+  },
 ];
 
 const seed = async () => {
@@ -28,52 +40,49 @@ const seed = async () => {
     const createdCategories = await Category.insertMany(categories);
     console.log(`Seeded ${createdCategories.length} categories successfully.`);
 
-    const products = [
+    const products = await Product.insertMany([
       {
-        name: "Smartphone",
-        description: "Flagship smart phone with elite display unit specs",
+        name: "Smartphone Pro Max",
+        description: "Flagship smartphone with elite display specs",
         price: 999.99,
         stock: 15,
-        category:createdCategories[0]._id,
+        category: createdCategories[0]._id,
+        images: ["phone.png"],
       },
       {
         name: "Wireless Audio Earbuds",
-        description: "Noise cancelling deep bass Bluetooth system sound core",
+        description: "Noise cancelling Bluetooth earbuds",
         price: 149.99,
         stock: 40,
-        category:createdCategories[0]._id,
+        category: createdCategories[0]._id,
+        images: ["earbuds.png"],
       },
       {
-        name: "Data Structures and Algorithms Textbook",
-        description: "A guide to mastering computer science algorithms",
+        name: "Data Structures Textbook",
+        description:
+          "Comprehensive guide to mastering computer science algorithms",
         price: 59.99,
         stock: 12,
-        category:createdCategories[1]._id,
+        category: createdCategories[1]._id,
+        images: ["dsa_book.png"],
       },
       {
-        name: "Science Fiction Novel",
-        description: "Epic space odyssey bestselling literature entry",
-        price: 14.99,
-        stock: 8,
-        category:createdCategories[1]._id,
-      },
-      {
-        name: "Premium Hoodie",
+        name: "Premium Cotton Hoodie",
         description: "Heavyweight oversized casual wear styling garment",
         price: 65.0,
         stock: 25,
-        category:createdCategories[2]._id,
+        category: createdCategories[2]._id,
+        images: ["hoodie.png"],
       },
       {
-        name: "Athletic Sneakers",
-        description: "Foam tech footwear for outdoor sports trainers",
+        name: "Athletic Running Sneakers",
+        description: "Performance foam tech footwear",
         price: 120.0,
         stock: 0,
-        category:createdCategories[2]._id,
+        category: createdCategories[2]._id,
+        images: ["sneakers.png"],
       },
-    ];
-
-    const products = await Product.insertMany(products);
+    ]);
     console.log(`Seeded ${products.length} products successfully.`);
 
     console.log("Seeding completed!");

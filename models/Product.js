@@ -31,10 +31,9 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: [true, "Product must belong to a valid category"]
     },
-    image: {
-      type: String,
-      required: [true, "Product image URL is required"],
-    },
+    images: [{
+      type: String
+    }],
     inStock: {
       type: Boolean,
       default: true
