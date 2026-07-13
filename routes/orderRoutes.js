@@ -2,15 +2,10 @@ const express = require("express");
 const orderController = require("../controllers/orderController");
 const router = express.Router();
 
-router
-  .route("/")
-  .post(orderController.checkout)
-  .get(orderController.getAllOrders);
+router.post("/", orderController.checkout);
+router.get("/", orderController.getAllOrders);
 
-router.route("/:id")
-  .get(orderController.getOrderById);
-
-router.route("/:id/status")
-  .patch(orderController.updateOrderStatus);
+router.get("/:id", orderController.getOrderById);
+router.patch("/:id/status", orderController.updateOrderStatus);
 
 module.exports = router;
