@@ -1,4 +1,4 @@
-# git push -u origin mainE-Commerce Backend API Platform
+# E-Commerce Backend API Platform
 
 A complete, production-ready RESTful E-Commerce API built with Node.js, Express.js, and MongoDB using the MVC architectural framework design pattern. Features custom error pipelines, complex aggregation calculations, dynamic filters, and clean stock check constraints logic.
 
