@@ -3,20 +3,12 @@ const asyncHandler = require("../utils/asyncHandler");
 const AppError = require("../utils/AppError");
 
 const createCategory = asyncHandler(async (req, res, next) => {
-  try {
-    const newCategory = await Category.create(req.body);
-    res.status(201).json({
-      status: "success",
-      message: "Category created successfully",
-      data: newCategory,
-    });
-  } catch (err) {
-    if (err.code === 11000) {
-      const field = Object.keys(err.keyValue)[0];
-      return next(new AppError(`${field} already exists`, 400));
-    }
-    return next(new AppError("Error creating category", 500));
-  }
+  const newCategory = await Category.create(req.body);
+  res.status(201).json({
+    status: "success",
+    message: "Category created successfully",
+    data: newCategory,
+  });
 });
 
 const getAllCategories = asyncHandler(async (req, res, next) => {

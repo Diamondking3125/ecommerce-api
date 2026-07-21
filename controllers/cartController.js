@@ -7,7 +7,7 @@ const recalculateCart = (cart) => {
   cart.totalPrice = cart.items.reduce((acc, item) => acc + item.quantity * item.price, 0);
 };
 
-exports.getCart = asyncHandler(async (req, res, next) => {
+const getCart = asyncHandler(async (req, res, next) => {
   let cart = await Cart.findOne().populate('items.product', 'name price image stock inStock');
   if (!cart) {
     cart = await Cart.create({ items: [], totalPrice: 0 });
@@ -15,7 +15,7 @@ exports.getCart = asyncHandler(async (req, res, next) => {
   res.status(200).json({ status: 'success', data: cart });
 });
 
-exports.addItemToCart = asyncHandler(async (req, res, next) => {
+const addItemToCart = asyncHandler(async (req, res, next) => {
   const { productId, quantity } = req.body;
   
   const product = await Product.findById(productId);
@@ -40,7 +40,7 @@ exports.addItemToCart = asyncHandler(async (req, res, next) => {
   res.status(200).json({ status: 'success', data: cart });
 });
 
-exports.updateCartItem = asyncHandler(async (req, res, next) => {
+const updateCartItem = asyncHandler(async (req, res, next) => {
   const { productId } = req.params;
   const { quantity } = req.body;
 
@@ -63,7 +63,7 @@ exports.updateCartItem = asyncHandler(async (req, res, next) => {
   res.status(200).json({ status: 'success', data: cart });
 });
 
-exports.removeCartItem = asyncHandler(async (req, res, next) => {
+const removeCartItem = asyncHandler(async (req, res, next) => {
   const { productId } = req.params;
   const cart = await Cart.findOne();
   if (!cart) return next(new AppError('Cart entity matching not found', 404));
@@ -75,7 +75,7 @@ exports.removeCartItem = asyncHandler(async (req, res, next) => {
   res.status(200).json({ status: 'success', data: cart });
 });
 
-exports.clearCart = asyncHandler(async (req, res, next) => {
+const clearCart = asyncHandler(async (req, res, next) => {
   const cart = await Cart.findOne();
   if (cart) {
     cart.items = [];
@@ -84,3 +84,11 @@ exports.clearCart = asyncHandler(async (req, res, next) => {
   }
   res.status(200).json({ status: 'success', message: 'Cart cleared successfully', data: cart });
 });
+
+module.exports = {
+  getCart, 
+  addItemToCart,
+  updateCartItem,
+  removeCartItem,
+  clearCart
+}
