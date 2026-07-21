@@ -60,6 +60,57 @@ const getOrderById = asyncHandler(async (req, res, next) => {
   res.status(200).json({ status: 'success', data: order });
 });
 
+const createOrder = asyncHandler(async (req, res, next) => {
+  const { orderNumber, items, totalPrice, shippingAddress, status } = req.body;
+
+  if (!orderNumber) return next(new AppError('Order number is required', 400));
+  if (!shippingAddress) return next(new AppError('Shipping address details must be provided', 400));
+  if (!Array.isArray(items) || items.length === 0) return next(new AppError('Order must contain at least one item', 400));
+  if (typeof totalPrice !== 'number' || totalPrice <= 0) return next(new AppError('A valid total price is required', 400));
+
+  for (const item of items) {
+    if (!item.product || !item.name || typeof item.price !== 'number' || typeof item.quantity !== 'number' || item.quantity <= 0) {
+      return next(new AppError('Each order item must include product, name, price, and quantity', 400));
+    }
+
+    const product = await Product.findById(item.product);
+    if (!product) return next(new AppError(`Product with id "${item.product}" was not found`, 404));
+    if (product.stock < item.quantity) {
+      return next(new AppError(`Product "${product.name}" is out of stock or quantity mismatch.`, 400));
+    }
+  }
+
+  const normalizedItems = [];
+
+  for (const item of items) {
+    const product = await Product.findById(item.product);
+    product.stock -= item.quantity;
+    product.inStock = product.stock > 0;
+    await product.save();
+
+    normalizedItems.push({
+      product: product._id,
+      name: product.name,
+      price: product.price,
+      quantity: item.quantity,
+    });
+  }
+
+  const newOrder = await Order.create({
+    orderNumber,
+    items: normalizedItems,
+    totalPrice,
+    shippingAddress,
+    status: status || 'Pending',
+  });
+
+  res.status(201).json({
+    status: 'success',
+    message: 'Order created successfully',
+    data: newOrder,
+  });
+});
+
 const updateOrderStatus = asyncHandler(async (req, res, next) => {
   const { status } = req.body;
 
@@ -76,5 +127,6 @@ module.exports = {
   checkout,
   getAllOrders,
   getOrderById,
+  createOrder,
   updateOrderStatus,
 };
