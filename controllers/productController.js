@@ -4,42 +4,24 @@ const asyncHandler = require("../utils/asyncHandler");
 const AppError = require("../utils/AppError");
 
 const createProduct = asyncHandler(async (req, res, next) => {
-  try {
-    const categoryExists = await Category.findById(req.body.category);
-    if (!categoryExists) return next(new AppError("Category not found", 404));
-    const newProduct = await Product.create(req.body);
-    res.status(201).json({
-        status: "success",
-        message: "Product created",
-        data: newProduct,
-      });
-  } catch (err) {
-    if (err.code === 11000) {
-      const field = Object.keys(err.keyValue)[0];
-      const value = err.keyValue[field];
-      return res.status(409).json({
-        status: "fail",
-        message: `A product with ${field} "${value}" already exists.`,
-        data: null,
-      });
-    }
-    return next(new AppError("Error creating product", 500));
-  }
+  const categoryExists = await Category.findById(req.body.category);
+  if (!categoryExists) return next(new AppError("Category not found", 404));
+  const newProduct = await Product.create(req.body);
+  res.status(201).json({
+    status: "success",
+    message: "Product created",
+    data: newProduct,
+  });
 });
 
-const bulkCreateProducts = async (req, res, next) => {
-  try {
-    const products = await Product.insertMany(req.body.products);
-
-    res.status(201).json({
-      status: "success",
-      message: `${products.length} products created`,
-      data: products,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+const bulkCreateProducts = asyncHandler(async (req, res, next) => {
+  const products = await Product.insertMany(req.body.products);
+  res.status(201).json({
+    status: "success",
+    message: `${products.length} products created`,
+    data: products,
+  });
+});
 
 const getAllProducts = asyncHandler(async (req, res, next) => {
   const queryObj = { ...req.query };
@@ -122,6 +104,7 @@ const deleteProduct = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   createProduct,
+  bulkCreateProducts,
   getAllProducts,
   getProductById,
   updateProduct,

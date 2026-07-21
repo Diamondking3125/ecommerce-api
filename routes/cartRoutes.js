@@ -1,11 +1,13 @@
 const express = require("express");
 const cartController = require("../controllers/cartController");
+const orderController = require("../controllers/orderController");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.status(200).json({ status: "success", message: "Cart route is available" });
-});
-
-router.post("/checkout", cartController.checkout);
+router.get("/", cartController.getCart);
+router.post("/items", cartController.addItemToCart);
+router.patch("/items/:productId", cartController.updateCartItem);
+router.delete("/items/:productId", cartController.removeCartItem);
+router.delete("/", cartController.clearCart);
+router.post("/checkout", orderController.checkout);
 
 module.exports = router;
