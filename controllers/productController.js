@@ -1,7 +1,8 @@
-const Product = require("../models/Product");
-const Category = require("../models/Category");
+const Product =      require("../models/Product");
+const Category =     require("../models/Category");
 const asyncHandler = require("../utils/asyncHandler");
-const AppError = require("../utils/AppError");
+const AppError =     require("../utils/AppError");
+const ok =           require('../utils/ok');
 
 const createProduct = asyncHandler(async (req, res, next) => {
   const categoryExists = await Category.findById(req.body.category);
@@ -24,38 +25,13 @@ const bulkCreateProducts = asyncHandler(async (req, res, next) => {
 });
 
 const getAllProducts = asyncHandler(async (req, res, next) => {
-  const queryObj = { ...req.query };
-  const excludedFields = ["page", "sort", "limit", "fields"];
-  excludedFields.forEach((el) => delete queryObj[el]);
-
-  let queryStr = JSON.stringify(queryObj);
-  queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-  let filters = JSON.parse(queryStr);
-
-  if (req.query.search) {
-    filters.$or = [
-      { name: { $regex: req.query.search, $options: "i" } },
-      { description: { $regex: req.query.search, $options: "i" } },
-    ];
-    delete filters.search;
-  }
-  if (req.query.minPrice || req.query.maxPrice) {
-    filters.price = {};
-    if (req.query.minPrice) filters.price.$gte = Number(req.query.minPrice);
-    if (req.query.maxPrice) filters.price.$lte = Number(req.query.maxPrice);
-    delete filters.minPrice;
-    delete filters.maxPrice;
-  }
-  if (req.query.inStock === "true") {
-    filters.inStock = true;
-  }
-
-  const products = await Product.find(filters);
-  res.status(200).json({
-    status: "success",
-    count: products.length,
-    data: products
-  });
+  const { category, minPrice, maxPrice } = req.query;
+  const filter = {};
+  if (category)  filter.category = category;
+  if (minPrice)  filter.price = { $gte: Number(minPrice) };
+  if (maxPrice)  filter.price = { $lte: Number(maxPrice) };
+  const products = await Product.find(filter).sort({ createdAt: -1 }).select('-__v');
+  ok(res, products, 'Products fetched successfully');
 });
 
 const getProductById = asyncHandler(async (req, res, next) => {
@@ -64,10 +40,7 @@ const getProductById = asyncHandler(async (req, res, next) => {
     "name description",
   );
   if (!product) return next(new AppError("Product not found", 404));
-  res.status(200).json({
-    status: "success",
-    message: "Product found",
-    data: product });
+ ok(res, product, "Product found");
 });
 
 const updateProduct = asyncHandler(async(req, res, next) => {
@@ -77,29 +50,15 @@ const updateProduct = asyncHandler(async(req, res, next) => {
     { new: true, runValidators: true },
   );
 
-  if (!updated) {
-    return res.status(404).json({
-      status: "error",
-      message: `No product found with id: ${req.params.id}`,
-      data: null,
-    });
-  }
+  if (!updated) return next(new AppError("Product not found", 404));
 
-  res.status(200).json({
-    status: "success",
-    message: "Product updated successfully",
-    data: updated,
-  });
+  ok(res, updated, "Product updated successfully");
 });
 
 const deleteProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findByIdAndDelete(req.params.id);
   if (!product) return next(new AppError("Product not found", 404));
-  res.status(200).json({
-    status: "success",
-    message: "Product deleted",
-    data: null
-  });
+  ok(res, null, "Product deleted")
 });
 
 module.exports = {

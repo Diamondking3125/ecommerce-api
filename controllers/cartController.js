@@ -1,7 +1,8 @@
-const Cart = require('../models/Cart');
-const Product = require('../models/Product');
+const Cart =         require('../models/Cart');
+const Product =      require('../models/Product');
 const asyncHandler = require('../utils/asyncHandler');
-const AppError = require('../utils/AppError');
+const AppError =     require('../utils/AppError');
+const ok =           require('../utils/ok');
 
 const recalculateCart = (cart) => {
   cart.totalPrice = cart.items.reduce((acc, item) => acc + item.quantity * item.price, 0);
@@ -12,7 +13,7 @@ const getCart = asyncHandler(async (req, res, next) => {
   if (!cart) {
     cart = await Cart.create({ items: [], totalPrice: 0 });
   }
-  res.status(200).json({ status: 'success', data: cart });
+  ok(res, cart, "Cart fetched successfully");
 });
 
 const addItemToCart = asyncHandler(async (req, res, next) => {
@@ -37,7 +38,7 @@ const addItemToCart = asyncHandler(async (req, res, next) => {
 
   recalculateCart(cart);
   await cart.save();
-  res.status(200).json({ status: 'success', data: cart });
+  ok(res, cart, "Item added to cart successfully");
 });
 
 const updateCartItem = asyncHandler(async (req, res, next) => {
@@ -60,7 +61,7 @@ const updateCartItem = asyncHandler(async (req, res, next) => {
   recalculateCart(cart);
   await cart.save();
 
-  res.status(200).json({ status: 'success', data: cart });
+  ok(res, cart, "Cart Item updated successfully");
 });
 
 const removeCartItem = asyncHandler(async (req, res, next) => {
@@ -72,7 +73,7 @@ const removeCartItem = asyncHandler(async (req, res, next) => {
   recalculateCart(cart);
   await cart.save();
 
-  res.status(200).json({ status: 'success', data: cart });
+  ok(res, cart, "Removed cart item successfully");
 });
 
 const clearCart = asyncHandler(async (req, res, next) => {
@@ -82,7 +83,7 @@ const clearCart = asyncHandler(async (req, res, next) => {
     cart.totalPrice = 0;
     await cart.save();
   }
-  res.status(200).json({ status: 'success', message: 'Cart cleared successfully', data: cart });
+  ok(res, cart, 'Cart cleared successfully');
 });
 
 module.exports = {

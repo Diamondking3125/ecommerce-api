@@ -1,25 +1,22 @@
-const Category = require("../models/Category");
+const Category =     require("../models/Category");
 const asyncHandler = require("../utils/asyncHandler");
-const AppError = require("../utils/AppError");
+const AppError =     require("../utils/AppError");
+const ok =           require('../utils/ok');
 
 const createCategory = asyncHandler(async (req, res, next) => {
   const newCategory = await Category.create(req.body);
-  res.status(201).json({
-    status: "success",
-    message: "Category created successfully",
-    data: newCategory,
-  });
+  ok(res, newCategory, "Category created successfully");
 });
 
 const getAllCategories = asyncHandler(async (req, res, next) => {
   const categories = await Category.find();
-  res.status(200).json({ status: "success", data: categories });
+  ok(res, categories, "Categories fetched successfully");
 });
 
 const getCategoryById = asyncHandler(async (req, res, next) => {
   const category = await Category.findById(req.params.id);
   if (!category) return next(new AppError("Category not found", 404));
-  res.status(200).json({ status: "success", data: category });
+ ok(res, category, "Category fetched successfully");
 });
 
 const updateCategory = asyncHandler(async (req, res, next) => {
@@ -29,21 +26,13 @@ const updateCategory = asyncHandler(async (req, res, next) => {
     { new: true, runValidators: true },
   );
   if (!updatedCategory) return next(new AppError("Category not found", 404));
-  res.status(200).json({
-      status: "success",
-      message: "Category updated successfully",
-      data: updatedCategory,
-    });
+  ok(res, updatedCategory, "Category updated successfully");
 });
 
 const deleteCategory = asyncHandler(async (req, res, next) => {
   const category = await Category.findByIdAndDelete(req.params.id);
   if (!category) return next(new AppError("Category not found", 404));
-  res.status(200).json({
-      status: "success",
-      message: "Category deleted successfully",
-      data: null,
-    });
+  ok(res, null, "Category deleted successfully");
 });
 
 module.exports = {

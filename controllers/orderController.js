@@ -1,8 +1,9 @@
-const Order = require('../models/Order');
-const Cart = require('../models/Cart');
-const Product = require('../models/Product');
+const Order =        require('../models/Order');
+const Cart =         require('../models/Cart');
+const Product =      require('../models/Product');
 const asyncHandler = require('../utils/asyncHandler');
-const AppError = require('../utils/AppError');
+const AppError =     require('../utils/AppError');
+const ok =           require('../utils/ok');
 
 const checkout = asyncHandler(async (req, res, next) => {
   const { shippingAddress } = req.body;
@@ -46,18 +47,18 @@ const checkout = asyncHandler(async (req, res, next) => {
   cart.totalPrice = 0;
   await cart.save();
 
-  res.status(201).json({ status: 'success', message: 'Order generated successfully', data: newOrder });
+  ok(res, newOrder, 'Order created successfully');
 });
 
 const getAllOrders = asyncHandler(async (req, res, next) => {
   const orders = await Order.find();
-  res.status(200).json({ status: 'success', count: orders.length, data: orders });
+  ok(res, orders, "Orders fetched successfully");
 });
 
 const getOrderById = asyncHandler(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
   if (!order) return next(new AppError('Order identifier record not found', 404));
-  res.status(200).json({ status: 'success', data: order });
+  ok(res, order, "Order fetched successfully");
 });
 
 const createOrder = asyncHandler(async (req, res, next) => {
@@ -104,11 +105,7 @@ const createOrder = asyncHandler(async (req, res, next) => {
     status: status || 'Pending',
   });
 
-  res.status(201).json({
-    status: 'success',
-    message: 'Order created successfully',
-    data: newOrder,
-  });
+  ok(res, newOrder, 'Order created successfully');
 });
 
 const updateOrderStatus = asyncHandler(async (req, res, next) => {
@@ -120,7 +117,7 @@ const updateOrderStatus = asyncHandler(async (req, res, next) => {
   order.status = status;
   await order.save();
 
-  res.status(200).json({ status: 'success', message: 'Status property modified successfully', data: order });
+ ok(res, order, 'Status property modified successfully');
 });
 
 module.exports = {
