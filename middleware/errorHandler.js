@@ -25,7 +25,7 @@ const handleDuplicateKeyError = (err) => {
 };
 
 const errorHandler = (err, req, res, next) => {
-    let { statusCode, message } = {
+  let { statusCode, message } = {
     statusCode: err.statusCode || 500,
     message:    err.message    || 'Internal server error',
   };
