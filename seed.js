@@ -15,14 +15,14 @@ const categories = [
     slug: "electronics",
   },
   {
-    name: "Books",
-    description: "Educational and fictional literature media books",
-    slug: "books",
+    name: "Clothing",
+    description: "A wide range of wear for casual, formal and sports",
+    slug: "clothing",
   },
   {
-    name: "Apparel",
-    description: "Clothing line outfits garments items",
-    slug: "apparel",
+    name: "Home & Living",
+    description: "Home appliances for a comfortable living",
+    slug: "home-living",
   },
 ];
 
@@ -42,46 +42,54 @@ const seed = async () => {
 
     const products = await Product.insertMany([
       {
-        name: "Smartphone Pro Max",
+        name: "Iphone 14",
         description: "Flagship smartphone with elite display specs",
-        price: 999.99,
-        stock: 15,
+        price: 799,
+        stock: 10,
         category: createdCategories[0]._id,
-        images: ["phone.png"],
+        images: ["Iphone 14.png"],
       },
       {
-        name: "Wireless Audio Earbuds",
-        description: "Noise cancelling Bluetooth earbuds",
-        price: 149.99,
-        stock: 40,
+        name: "Dell Laptop",
+        description: "Laptop with premium display and specs",
+        price: 999,
+        stock: 7,
         category: createdCategories[0]._id,
-        images: ["earbuds.png"],
+        images: ["Dell Laptop.png"],
       },
       {
-        name: "Data Structures Textbook",
+        name: "Men T-Shirt",
         description:
-          "Comprehensive guide to mastering computer science algorithms",
-        price: 59.99,
-        stock: 12,
-        category: createdCategories[1]._id,
-        images: ["dsa_book.png"],
-      },
-      {
-        name: "Premium Cotton Hoodie",
-        description: "Heavyweight oversized casual wear styling garment",
-        price: 65.0,
+          "A T-Shirt for men",
+        price: 19,
         stock: 25,
-        category: createdCategories[2]._id,
-        images: ["hoodie.png"],
+        category: createdCategories[1]._id,
+        images: ["Men T-Shirt.png"],
       },
       {
-        name: "Athletic Running Sneakers",
-        description: "Performance foam tech footwear",
-        price: 120.0,
-        stock: 0,
-        category: createdCategories[2]._id,
-        images: ["sneakers.png"],
+        name: "Blue Jeans",
+        description: "A casual blue jeans",
+        price: 49,
+        stock: 15,
+        category: createdCategories[1]._id,
+        images: ["Blue Jeans.png"],
       },
+      {
+        name: "Sofa",
+        description: "A comfortable place to sit",
+        price: 299,
+        stock: 5,
+        category: createdCategories[2]._id,
+        images: ["Sofa.png"],
+      },
+      {
+        name: "Table Lamp",
+        description: "A lamp with strong, and comfortable light designed for tables",
+        price: 29,
+        stock: 20,
+        category: createdCategories[2]._id,
+        images: ["Table Lamp.png"],
+      }
     ]);
     console.log(`Seeded ${products.length} products successfully.`);
 
