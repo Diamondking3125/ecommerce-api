@@ -1,5 +1,12 @@
 const mongoose = require("mongoose");
 
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+}
+
 const categorySchema = new mongoose.Schema(
   {
     name: {
@@ -11,18 +18,30 @@ const categorySchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, "Category description is required"],
+      required: false,
       minlength: [10, "Description must be at least 10 characters long"],
       maxlength: [500, "Description cannot exceed 500 characters"]
     },
     slug: {
       type: String,
       required: [true, "Slug is required"],
+      lowercase: true,
       unique: true,
-      lowercase: true
+      index: true
     }
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Category", categorySchema);
+categorySchema.pre("slug", function (next) {
+  if (!this.isModified('title')) {
+    return next();
+  }
+
+  this.slug = slugify(this.title);
+  next();
+});
+
+Category = mongoose.model("Category", categorySchema);
+
+module.exports = Category
