@@ -5,7 +5,7 @@ const ok =           require('../utils/ok');
 
 const createCategory = asyncHandler(async (req, res, next) => {
   const newCategory = await Category.create(req.body);
-  ok(res, newCategory, "Category created successfully");
+  ok(res, newCategory, "Category created successfully", 201);
 });
 
 const getAllCategories = asyncHandler(async (req, res, next) => {
@@ -13,10 +13,11 @@ const getAllCategories = asyncHandler(async (req, res, next) => {
   ok(res, categories, "Categories fetched successfully");
 });
 
-const getCategoryById = asyncHandler(async (req, res, next) => {
+const getOneCategory = asyncHandler(async (req, res, next) => {
   const category = await Category.findById(req.params.id);
   if (!category) return next(new AppError("Category not found", 404));
- ok(res, category, "Category fetched successfully");
+
+  ok(res, category, "Category fetched successfully");
 });
 
 const updateCategory = asyncHandler(async (req, res, next) => {
@@ -25,7 +26,9 @@ const updateCategory = asyncHandler(async (req, res, next) => {
     req.body,
     { new: true, runValidators: true },
   );
+
   if (!updatedCategory) return next(new AppError("Category not found", 404));
+  
   ok(res, updatedCategory, "Category updated successfully");
 });
 
@@ -38,7 +41,7 @@ const deleteCategory = asyncHandler(async (req, res, next) => {
 module.exports = {
   createCategory,
   getAllCategories,
-  getCategoryById,
+  getOneCategorys,
   updateCategory,
   deleteCategory,
 };
