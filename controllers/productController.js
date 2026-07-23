@@ -7,21 +7,17 @@ const ok =           require('../utils/ok');
 const createProduct = asyncHandler(async (req, res, next) => {
   const categoryExists = await Category.findById(req.body.category);
   if (!categoryExists) return next(new AppError("Category not found", 404));
+
   const newProduct = await Product.create(req.body);
-  res.status(201).json({
-    status: "success",
-    message: "Product created",
-    data: newProduct,
-  });
+  ok(res, newProduct, "Product created", 201)
 });
 
 const bulkCreateProducts = asyncHandler(async (req, res, next) => {
-  const products = await Product.insertMany(req.body.products);
-  res.status(201).json({
-    status: "success",
-    message: `${products.length} products created`,
-    data: products,
+  const products = await Product.insertMany(req.body.products, {
+    runValidators: true,
+    ordered: false
   });
+  ok(res, products, `${products.length} products creatd`, 201)
 });
 
 const getAllProducts = asyncHandler(async (req, res, next) => {
@@ -34,12 +30,14 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
   ok(res, products, 'Products fetched successfully');
 });
 
-const getProductById = asyncHandler(async (req, res, next) => {
+const getOneProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.id).populate(
     "category",
     "name description",
   );
+
   if (!product) return next(new AppError("Product not found", 404));
+
  ok(res, product, "Product found");
 });
 
@@ -65,7 +63,7 @@ module.exports = {
   createProduct,
   bulkCreateProducts,
   getAllProducts,
-  getProductById,
+  getOneProduct,
   updateProduct,
   deleteProduct,
 };
