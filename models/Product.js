@@ -12,6 +12,7 @@ const productSchema = new mongoose.Schema(
     description: {
       type: String,
       required: [true, "Product description is required"],
+      trim: true,
       minlength: [10, "Description must be at least 10 characters long"],
       maxlength: [500, "Description cannot exceed 500 characters"]
     },
@@ -19,12 +20,12 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Product price is required"],
       min: [0, "Price cannot be less than 0"],
-      max: [99999, "Price cannot exceed 99999"]
     },
     stock: {
       type: Number,
+      required: [true, "Stock is required"],
+      min: [0, "Stock cannot be negative"],
       default: 0,
-      min: [0, "Stock cannot be negative"]
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
