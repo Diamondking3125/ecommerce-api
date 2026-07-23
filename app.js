@@ -28,18 +28,17 @@ app.use((req, res, next) => {
 
 app.use(errorHandler);
 
-async function startServer() {
+const startServer = async () => {
   try {
     await connectDB();
 
-    const PORT = config.port || 3000;
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}/`);
+    app.listen(config.port, () => {
+      console.log(`Server running on http://localhost:${config.port}/`);
     });
   } catch (err) {
     console.error("MongoDB connection failed:", err.message);
     process.exit(1);
   }
-}
+};
 
 startServer();
