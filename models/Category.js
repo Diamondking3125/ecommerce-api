@@ -43,5 +43,4 @@ categorySchema.pre("slug", function (next) {
 });
 
 Category = mongoose.model("Category", categorySchema);
-
 module.exports = Category
