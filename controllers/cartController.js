@@ -4,7 +4,7 @@ const asyncHandler = require('../utils/asyncHandler');
 const AppError =     require('../utils/AppError');
 const ok =           require('../utils/ok');
 
-const getCart = asyncHandler(async (req, res, next) => {
+exports.getCart = asyncHandler(async (req, res, next) => {
   let cart = await Cart.findOne().populate('items.product', 'name price image stock inStock');
   if (!cart) {
     cart = await Cart.create({ items: [], totalPrice: 0 });
@@ -13,7 +13,7 @@ const getCart = asyncHandler(async (req, res, next) => {
   ok(res, cart, "Cart fetched successfully");
 });
 
-const addItemToCart = asyncHandler(async (req, res, next) => {
+exports.addItemToCart = asyncHandler(async (req, res, next) => {
   const { productId, quantity } = req.body;
   
   if (!quantity || quantity < 0) return next(new AppError("Quantity must be a positive integer", 400));
@@ -33,7 +33,7 @@ const addItemToCart = asyncHandler(async (req, res, next) => {
   }
 });
 
-const updateCartItem = asyncHandler(async (req, res, next) => {
+exports.updateCartItem = asyncHandler(async (req, res, next) => {
   const { productId } = req.params;
   const { quantity } = req.body;
 
@@ -52,7 +52,7 @@ const updateCartItem = asyncHandler(async (req, res, next) => {
   }
 });
 
-const removeCartItem = asyncHandler(async (req, res, next) => {
+exports.removeCartItem = asyncHandler(async (req, res, next) => {
   const { productId } = req.params;
   const cart = await Cart.findOne();
   if (!cart) return next(new AppError('Cart entity matching not found', 404));
@@ -64,7 +64,7 @@ const removeCartItem = asyncHandler(async (req, res, next) => {
   ok(res, cart, "Removed cart item successfully");
 });
 
-const clearCart = asyncHandler(async (req, res, next) => {
+exports.clearCart = asyncHandler(async (req, res, next) => {
   const cart = await Cart.findOne();
   if (!cart) return next(new AppError('cart not found', 404));
 
@@ -74,11 +74,3 @@ const clearCart = asyncHandler(async (req, res, next) => {
 
   ok(res, cart, 'Cart cleared successfully');
 });
-
-module.exports = {
-  getCart, 
-  addItemToCart,
-  updateCartItem,
-  removeCartItem,
-  clearCart
-}

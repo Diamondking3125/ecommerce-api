@@ -4,7 +4,7 @@ const asyncHandler = require("../utils/asyncHandler");
 const AppError =     require("../utils/AppError");
 const ok =           require('../utils/ok');
 
-const createProduct = asyncHandler(async (req, res, next) => {
+exports.createProduct = asyncHandler(async (req, res, next) => {
   const categoryExists = await Category.findById(req.body.category);
   if (!categoryExists) return next(new AppError("Category not found", 404));
 
@@ -12,7 +12,7 @@ const createProduct = asyncHandler(async (req, res, next) => {
   ok(res, newProduct, "Product created", 201)
 });
 
-const bulkCreateProducts = asyncHandler(async (req, res, next) => {
+exports.bulkCreateProducts = asyncHandler(async (req, res, next) => {
   const products = await Product.insertMany(req.body.products, {
     runValidators: true,
     ordered: false
@@ -20,7 +20,7 @@ const bulkCreateProducts = asyncHandler(async (req, res, next) => {
   ok(res, products, `${products.length} products creatd`, 201)
 });
 
-const getAllProducts = asyncHandler(async (req, res, next) => {
+exports.getAllProducts = asyncHandler(async (req, res, next) => {
   const { category, minPrice, maxPrice } = req.query;
   const filter = {};
   if (category)  filter.category = category;
@@ -30,7 +30,7 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
   ok(res, products, 'Products fetched successfully');
 });
 
-const getOneProduct = asyncHandler(async (req, res, next) => {
+exports.getOneProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.id).populate(
     "category",
     "name description",
@@ -41,7 +41,7 @@ const getOneProduct = asyncHandler(async (req, res, next) => {
  ok(res, product, "Product found");
 });
 
-const updateProduct = asyncHandler(async(req, res, next) => {
+exports.updateProduct = asyncHandler(async(req, res, next) => {
   const updated = await Product.findByIdAndUpdate(
     req.params.id,
     { $set: req.body },
@@ -53,17 +53,8 @@ const updateProduct = asyncHandler(async(req, res, next) => {
   ok(res, updated, "Product updated successfully");
 });
 
-const deleteProduct = asyncHandler(async (req, res, next) => {
+exports.deleteProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findByIdAndDelete(req.params.id);
   if (!product) return next(new AppError("Product not found", 404));
   ok(res, null, "Product deleted")
 });
-
-module.exports = {
-  createProduct,
-  bulkCreateProducts,
-  getAllProducts,
-  getOneProduct,
-  updateProduct,
-  deleteProduct,
-};

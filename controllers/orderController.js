@@ -5,7 +5,7 @@ const asyncHandler = require('../utils/asyncHandler');
 const AppError =     require('../utils/AppError');
 const ok =           require('../utils/ok');
 
-const checkout = asyncHandler(async (req, res, next) => {
+exports.checkout = asyncHandler(async (req, res, next) => {
   const { shippingAddress } = req.body;
 
   const cart = await Cart.findOne().populate('items.product');
@@ -33,19 +33,19 @@ const checkout = asyncHandler(async (req, res, next) => {
   ok(res, newOrder, 'Order created successfully', 201);
 });
 
-const getAllOrders = asyncHandler(async (req, res, next) => {
+exports.getAllOrders = asyncHandler(async (req, res, next) => {
   const orders = await Order.find().populate("items.product", "name price");;
   ok(res, orders, "Orders fetched successfully");
 });
 
-const getOrderById = asyncHandler(async (req, res, next) => {
+exports.getOrderById = asyncHandler(async (req, res, next) => {
   const order = await Order.findById(req.params.id).populate("items.product", "name price");
   if (!order) return next(new AppError('Order identifier record not found', 404));
 
   ok(res, order, "Order fetched successfully");
 });
 
-const updateOrderStatus = asyncHandler(async (req, res, next) => {
+exports.updateOrderStatus = asyncHandler(async (req, res, next) => {
   const { status } = req.body;
 
   const order = await Order.findById(req.params.id);
@@ -83,10 +83,3 @@ async function updateStock(cart) {
     await item.product.save();
   }
 }
-
-module.exports = {
-  checkout,
-  getAllOrders,
-  getOrderById,
-  updateOrderStatus,
-};
