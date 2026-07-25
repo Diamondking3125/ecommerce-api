@@ -41,7 +41,7 @@ const deleteCategory = asyncHandler(async (req, res, next) => {
 module.exports = {
   createCategory,
   getAllCategories,
-  getOneCategorys,
+  getOneCategory,
   updateCategory,
   deleteCategory,
 };
