@@ -26,19 +26,47 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: {
-        values: ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"],
+        values: ["pending", "confirmed", "shipped", "delivered", "cancelled"],
         message: "Status must be either Pending, Confirmed, Shipped, Delivered, or Cancelled",
       },
-      default: "Pending",
+      default: "pending",
     },
     shippingAddress: {
-      street: String,
-      city: String,
-      country: String,
+      street: {
+        type: String,
+        required: [true, "Street is required"],
+        trim: true,
+      },
+      city: {
+        type: String,
+        required: [true, "City is required"],
+        trim: true,
+      },
+      country: {
+        type: String,
+        required: [true, "Country is required"],
+        trim: true,
+      },
+      required: [true, "Shipping Adress is required"]
     },
   },
   { timestamps: true },
 );
+
+orderSchema.statics.generateOrderNumber = function () {
+  return `ORD-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+};
+
+orderSchema.methods.updateStatus = function (status) {
+    this.status = status;
+};
+
+orderSchema.statics.calculateTotal = function (items) {
+    return items.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+    );
+};
 
 Order = mongoose.model("Order", orderSchema);
 module.exports = Order;
