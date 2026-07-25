@@ -52,7 +52,7 @@ cartSchema.methods.addItem = function (product, quantity) {
     this.items.push({ product: product._id, quantity, price: product.price });
   }
 
-  this.recalculateTotal();
+  cart.recalculateTotal();
 };
 
 
@@ -75,7 +75,12 @@ cartSchema.methods.updateItem = function (product, quantity) {
     this.items[itemIndex].price = product.price;
   }
 
-  this.recalculateTotal();
+  cart.recalculateTotal();
+};
+
+cartSchema.methods.clear = function () {
+    this.items = [];
+    this.totalPrice = 0;
 };
 
 const Cart = mongoose.model("Cart", cartSchema);

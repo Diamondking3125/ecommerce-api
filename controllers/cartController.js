@@ -68,11 +68,9 @@ const clearCart = asyncHandler(async (req, res, next) => {
   const cart = await Cart.findOne();
   if (!cart) return next(new AppError('cart not found', 404));
 
-  if (cart) {
-    cart.items = [];
-    cart.totalPrice = 0;
-    await cart.save();
-  }
+  cart.clear()
+  await cart.save();
+
 
   ok(res, cart, 'Cart cleared successfully');
 });
