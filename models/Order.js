@@ -32,22 +32,24 @@ const orderSchema = new mongoose.Schema(
       default: "pending",
     },
     shippingAddress: {
-      street: {
-        type: String,
-        required: [true, "Street is required"],
-        trim: true,
+      type: {
+        street: {
+          type: String,
+          required: [true, "Street is required"],
+          trim: true,
+        },
+        city: {
+          type: String,
+          required: [true, "City is required"],
+          trim: true,
+        },
+        country: {
+          type: String,
+          required: [true, "Country is required"],
+          trim: true,
+        },
       },
-      city: {
-        type: String,
-        required: [true, "City is required"],
-        trim: true,
-      },
-      country: {
-        type: String,
-        required: [true, "Country is required"],
-        trim: true,
-      },
-      required: [true, "Shipping Adress is required"]
+      required: [true, "Shipping Address is required"],
     },
   },
   { timestamps: true },
