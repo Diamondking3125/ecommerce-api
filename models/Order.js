@@ -26,14 +26,15 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: {
-        values: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
-        message: "Status must be either Pending, Processing, Shipped, Delivered, or Cancelled",
+        values: ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"],
+        message: "Status must be either Pending, Confirmed, Shipped, Delivered, or Cancelled",
       },
       default: "Pending",
     },
     shippingAddress: {
-      type: String,
-      required: [true, "Shipping address is required"],
+      street: String,
+      city: String,
+      country: String,
     },
   },
   { timestamps: true },
