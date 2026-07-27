@@ -1,5 +1,5 @@
-const Cart =         require('../models/Cart');
-const Product =      require('../models/Product');
+const Cart =         require('../models/cart.model');
+const Product =      require('../models/product.model');
 const asyncHandler = require('../utils/asyncHandler');
 const AppError =     require('../utils/AppError');
 const ok =           require('../utils/ok');
