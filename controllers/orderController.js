@@ -5,7 +5,7 @@ const asyncHandler = require('../utils/asyncHandler');
 const AppError =     require('../utils/AppError');
 const ok =           require('../utils/ok');
 
-exports.checkout = asyncHandler(async (req, res, next) => {
+exports.createOrder = asyncHandler(async (req, res, next) => {
   const { shippingAddress } = req.body;
 
   const cart = await Cart.findOne().populate('items.product');
@@ -15,22 +15,15 @@ exports.checkout = asyncHandler(async (req, res, next) => {
 
   const orderItems = buildOrderItems(cart);
 
-  const totalPrice = Order.calculateTotal(orderItems);
-
-  await updateStock(cart);
-
-  const newOrder = await Order.create({
+  const order = await Order.create({
     orderNumber: Order.generateOrderNumber(),
     items: orderItems,
-    totalPrice,
+    totalPrice: Order.calculateTotal(orderItems),
     shippingAddress,
-    status: 'pending'
+    status: 'pending',
   });
 
-  cart.clear();
-  await cart.save();
-
-  ok(res, newOrder, 'Order created successfully', 201);
+  ok(res, order, 'Order created successfully', 201);
 });
 
 exports.getAllOrders = asyncHandler(async (req, res, next) => {
@@ -55,6 +48,30 @@ exports.updateOrderStatus = asyncHandler(async (req, res, next) => {
   await order.save();
 
  ok(res, order, 'Status property modified successfully');
+});
+
+exports.checkout = asyncHandler(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order)
+    return next(new AppError("Order not found", 404));
+
+  if (order.status !== "pending")
+    return next(new AppError("Order has already been checked out", 400));
+
+  const cart = await Cart.findOne().populate("items.product");
+
+  validateStock(cart);
+
+  await updateStock(cart);
+
+  cart.clear();
+  await cart.save();
+
+  order.status = "confirmed";
+  await order.save();
+
+  ok(res, order, "Checkout completed successfully");
 });
 
 function buildOrderItems(cart) {

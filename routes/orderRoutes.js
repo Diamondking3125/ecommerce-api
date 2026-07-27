@@ -3,9 +3,11 @@ const orderController = require("../controllers/orderController");
 const router = express.Router();
 
 router.get("/", orderController.getAllOrders);
-router.post("/", orderController.checkout);
+router.post("/", orderController.createOrder);
 
 router.get("/:id", orderController.getOrderById);
 router.patch("/:id/status", orderController.updateOrderStatus);
+
+router.post("/:id/checkout", orderController.checkout);
 
 module.exports = router;
