@@ -45,7 +45,6 @@ const productSchema = new mongoose.Schema(
 
 productSchema.pre("save", function (next) {
   this.inStock = this.stock > 0;
-  next();
 });
 
 Product = mongoose.model("Product", productSchema);

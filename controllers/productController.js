@@ -9,7 +9,9 @@ exports.createProduct = asyncHandler(async (req, res, next) => {
   if (!categoryExists) return next(new AppError("Category not found", 404));
 
   const newProduct = await Product.create(req.body);
-  ok(res, newProduct, "Product created", 201)
+  const productWithCategory = await Product.findById(newProduct._id).populate("category");
+
+  ok(res, productWithCategory, "Product created", 201);
 });
 
 exports.bulkCreateProducts = asyncHandler(async (req, res, next) => {
@@ -17,7 +19,10 @@ exports.bulkCreateProducts = asyncHandler(async (req, res, next) => {
     runValidators: true,
     ordered: false
   });
-  ok(res, products, `${products.length} products creatd`, 201)
+
+  const populatedProducts = await Product.find({ _id: { $in: products.map((product) => product._id) } }).populate("category");
+
+  ok(res, populatedProducts, `${populatedProducts.length} products creatd`, 201);
 });
 
 exports.getAllProducts = asyncHandler(async (req, res, next) => {
@@ -26,7 +31,7 @@ exports.getAllProducts = asyncHandler(async (req, res, next) => {
   if (category)  filter.category = category;
   if (minPrice)  filter.price = { $gte: Number(minPrice) };
   if (maxPrice)  filter.price = { $lte: Number(maxPrice) };
-  const products = await Product.find(filter).sort({ createdAt: -1 }).select('-__v');
+  const products = await Product.find(filter).sort({ createdAt: -1 }).select('-__v').populate('category');
   ok(res, products, 'Products fetched successfully');
 });
 
@@ -50,11 +55,13 @@ exports.updateProduct = asyncHandler(async(req, res, next) => {
 
   if (!updated) return next(new AppError("Product not found", 404));
 
-  ok(res, updated, "Product updated successfully");
+  const productWithCategory = await Product.findById(updated._id).populate("category");
+
+  ok(res, productWithCategory, "Product updated successfully");
 });
 
 exports.deleteProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findByIdAndDelete(req.params.id);
   if (!product) return next(new AppError("Product not found", 404));
-  ok(res, null, "Product deleted")
+  ok(res, product, "Product deleted")
 });
