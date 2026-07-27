@@ -240,7 +240,7 @@
         {
           "name": "Update Category",
           "request": {
-            "method": "PUT",
+            "method": "PATCH",
             "header": [],
             "body": {
               "mode": "raw",
@@ -266,7 +266,7 @@
             {
               "name": "Update Category",
               "originalRequest": {
-                "method": "PUT",
+                "method": "PATCH",
                 "header": [],
                 "body": {
                   "mode": "raw",
@@ -632,7 +632,7 @@
         {
           "name": "Update Product",
           "request": {
-            "method": "PUT",
+            "method": "PATCH",
             "header": [],
             "body": {
               "mode": "raw",
@@ -658,7 +658,7 @@
             {
               "name": "Update Product",
               "originalRequest": {
-                "method": "PUT",
+                "method": "PATCH",
                 "header": [],
                 "body": {
                   "mode": "raw",
@@ -953,7 +953,7 @@
         {
           "name": "Update Cart Item Quantity",
           "request": {
-            "method": "PUT",
+            "method": "PATCH",
             "header": [],
             "body": {
               "mode": "raw",
@@ -979,7 +979,7 @@
             {
               "name": "Update Cart Item Quantity",
               "originalRequest": {
-                "method": "PUT",
+                "method": "PATCH",
                 "header": [],
                 "body": {
                   "mode": "raw",
