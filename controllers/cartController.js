@@ -16,10 +16,10 @@ exports.getCart = asyncHandler(async (req, res, next) => {
 exports.addItemToCart = asyncHandler(async (req, res, next) => {
   const { productId, quantity } = req.body;
   
-  if (!quantity || quantity < 0) return next(new AppError("Quantity must be a positive integer", 400));
+  if (!quantity) return next(new AppError("Quantity is required", 400));
 
   const product = await Product.findById(productId);
-  if (!product) return next(new AppError('Product not found', 404));
+  if (!product) return next(new AppError('Product is required', 404));
   if (product.stock <= 0) return next(new AppError('Product is out of stock', 400));
 
   let cart = (await Cart.findOne() || await Cart.create({ items: [], totalPrice: 0 }))
@@ -58,7 +58,7 @@ exports.removeCartItem = asyncHandler(async (req, res, next) => {
   if (!cart) return next(new AppError('Cart entity matching not found', 404));
 
   cart.items = cart.items.filter(item => item.product.toString() !== productId);
-  recalculateCart(cart);
+  cart.recalculateTotal();
   await cart.save();
 
   ok(res, cart, "Removed cart item successfully");
