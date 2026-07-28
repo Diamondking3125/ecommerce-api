@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "b1ad03f6-eca0-4f5b-a2a9-54dd61b1d51a",
+    "_postman_id": "f4742c74-92b3-4a06-9f20-5bbba1a98084",
     "name": "E-Commerce API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "56114624",
-    "_collection_link": "https://go.postman.co/collection/56114624-b1ad03f6-eca0-4f5b-a2a9-54dd61b1d51a?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/56114624-f4742c74-92b3-4a06-9f20-5bbba1a98084?source=collection_link"
   },
   "item": [
     {
@@ -43,7 +43,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -114,7 +114,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -201,7 +201,7 @@
               },
               "status": "Bad Request",
               "code": 400,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -290,7 +290,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -361,7 +361,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -435,7 +435,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -506,7 +506,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -593,7 +593,7 @@
               },
               "status": "Created",
               "code": 201,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -682,7 +682,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -753,7 +753,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -786,6 +786,95 @@
               ],
               "cookie": [],
               "body": "{\n    \"status\": \"success\",\n    \"message\": \"Product deleted\",\n    \"data\": {\n        \"_id\": \"6a677f85b4930995740a9839\",\n        \"name\": \"Bed2.0\",\n        \"description\": \"A comfortable place to sleep\",\n        \"price\": 350,\n        \"stock\": 15,\n        \"category\": \"6a677e21b4d0ec9183cb2c2c\",\n        \"images\": [],\n        \"inStock\": true,\n        \"createdAt\": \"2026-07-27T15:55:49.914Z\",\n        \"updatedAt\": \"2026-07-27T15:56:09.524Z\",\n        \"__v\": 0\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Bulk Create Product",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"products\": [\r\n    {\r\n      \"name\": \"Ergonomic Keyboard\",\r\n      \"description\": \"A compact keyboard with quiet keys for office use.\",\r\n      \"price\": 59.99,\r\n      \"stock\": 20,\r\n      \"category\": \"6a677e21b4d0ec9183cb2c2a\",\r\n      \"images\": [\"keyboard.jpg\"],\r\n      \"inStock\": true\r\n    },\r\n    {\r\n      \"name\": \"USB-C Hub\",\r\n      \"description\": \"Multi-port USB-C hub supports fast charging.\",\r\n      \"price\": 39.5,\r\n      \"stock\": 15,\r\n      \"category\": \"6a677e21b4d0ec9183cb2c2a\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/products/bulk",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "products",
+                "bulk"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Bulk Create Product",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"products\": [\r\n    {\r\n      \"name\": \"Ergonomic Keyboard\",\r\n      \"description\": \"A compact keyboard with quiet keys for office use.\",\r\n      \"price\": 59.99,\r\n      \"stock\": 20,\r\n      \"category\": \"6a677e21b4d0ec9183cb2c2a\",\r\n      \"images\": [\"keyboard.jpg\"],\r\n      \"inStock\": true\r\n    },\r\n    {\r\n      \"name\": \"USB-C Hub\",\r\n      \"description\": \"Multi-port USB-C hub supports fast charging.\",\r\n      \"price\": 39.5,\r\n      \"stock\": 15,\r\n      \"category\": \"6a677e21b4d0ec9183cb2c2a\"\r\n    }\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/products/bulk",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "products",
+                    "bulk"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1049"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"419-Ji+yz1wK+mnWVxNGSomKizScv44\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 28 Jul 2026 11:32:42 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"2 products creatd\",\n    \"data\": [\n        {\n            \"_id\": \"6a68935ab2df93ddf6f92340\",\n            \"name\": \"Ergonomic Keyboard\",\n            \"description\": \"A compact keyboard with quiet keys for office use.\",\n            \"price\": 59.99,\n            \"stock\": 20,\n            \"category\": {\n                \"_id\": \"6a677e21b4d0ec9183cb2c2a\",\n                \"name\": \"Electronics\",\n                \"description\": \"Gadgets, devices and smart appliances\",\n                \"slug\": \"electronics\",\n                \"__v\": 0,\n                \"createdAt\": \"2026-07-27T15:49:53.757Z\",\n                \"updatedAt\": \"2026-07-27T15:49:53.757Z\"\n            },\n            \"images\": [\n                \"keyboard.jpg\"\n            ],\n            \"inStock\": true,\n            \"__v\": 0,\n            \"createdAt\": \"2026-07-28T11:32:42.484Z\",\n            \"updatedAt\": \"2026-07-28T11:32:42.484Z\"\n        },\n        {\n            \"_id\": \"6a68935ab2df93ddf6f92341\",\n            \"name\": \"USB-C Hub\",\n            \"description\": \"Multi-port USB-C hub supports fast charging.\",\n            \"price\": 39.5,\n            \"stock\": 15,\n            \"category\": {\n                \"_id\": \"6a677e21b4d0ec9183cb2c2a\",\n                \"name\": \"Electronics\",\n                \"description\": \"Gadgets, devices and smart appliances\",\n                \"slug\": \"electronics\",\n                \"__v\": 0,\n                \"createdAt\": \"2026-07-27T15:49:53.757Z\",\n                \"updatedAt\": \"2026-07-27T15:49:53.757Z\"\n            },\n            \"images\": [],\n            \"inStock\": true,\n            \"__v\": 0,\n            \"createdAt\": \"2026-07-28T11:32:42.486Z\",\n            \"updatedAt\": \"2026-07-28T11:32:42.486Z\"\n        }\n    ]\n}"
             }
           ]
         }
@@ -827,7 +916,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -914,7 +1003,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -1003,7 +1092,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -1074,7 +1163,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -1143,7 +1232,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -1235,7 +1324,7 @@
               },
               "status": "Created",
               "code": 201,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -1304,7 +1393,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -1375,7 +1464,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -1466,7 +1555,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -1539,7 +1628,7 @@
               },
               "status": "Bad Request",
               "code": 400,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
@@ -1592,7 +1681,7 @@
               },
               "status": "OK",
               "code": 200,
-              "_postman_previewlanguage": null,
+              "_postman_previewlanguage": "Text",
               "header": [
                 {
                   "key": "X-Powered-By",
