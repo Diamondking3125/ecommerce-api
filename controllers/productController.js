@@ -9,7 +9,7 @@ exports.createProduct = asyncHandler(async (req, res, next) => {
   if (!categoryExists) return next(new AppError("Category not found", 404));
 
   const newProduct = await Product.create(req.body);
-  const productWithCategory = await Product.findById(newProduct._id).populate("category");
+  const productWithCategory = await Product.findById(newProduct._id).populate("category", "name description");
 
   ok(res, productWithCategory, "Product created", 201);
 });
@@ -20,7 +20,7 @@ exports.bulkCreateProducts = asyncHandler(async (req, res, next) => {
     ordered: false
   });
 
-  const populatedProducts = await Product.find({ _id: { $in: products.map((product) => product._id) } }).populate("category");
+  const populatedProducts = await Product.find({ _id: { $in: products.map((product) => product._id) } }).populate("category", "name description");
 
   ok(res, populatedProducts, `${populatedProducts.length} products creatd`, 201);
 });
@@ -31,15 +31,12 @@ exports.getAllProducts = asyncHandler(async (req, res, next) => {
   if (category)  filter.category = category;
   if (minPrice)  filter.price = { $gte: Number(minPrice) };
   if (maxPrice)  filter.price = { $lte: Number(maxPrice) };
-  const products = await Product.find(filter).sort({ createdAt: -1 }).select('-__v').populate('category');
+  const products = await Product.find(filter).sort({ createdAt: -1 }).select('-__v').populate("category", "name description");
   ok(res, products, 'Products fetched successfully');
 });
 
 exports.getOneProduct = asyncHandler(async (req, res, next) => {
-  const product = await Product.findById(req.params.id).populate(
-    "category",
-    "name description",
-  );
+  const product = await Product.findById(req.params.id).populate("category","name description",);
 
   if (!product) return next(new AppError("Product not found", 404));
 
@@ -55,7 +52,7 @@ exports.updateProduct = asyncHandler(async(req, res, next) => {
 
   if (!updated) return next(new AppError("Product not found", 404));
 
-  const productWithCategory = await Product.findById(updated._id).populate("category");
+  const productWithCategory = await Product.findById(updated._id).populate("category", "name description");
 
   ok(res, productWithCategory, "Product updated successfully");
 });
